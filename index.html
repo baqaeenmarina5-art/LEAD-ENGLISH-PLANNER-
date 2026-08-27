@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#17324d">
+<link rel="manifest" href="manifest.json">
+<title>LEAD ENGLISH — Smart Lesson Planner</title>
+<style>
+:root{--navy:#17324d;--blue:#315f87;--gold:#e4b84c;--bg:#eef1f4;--line:#c9d3dc}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:Arial,Tahoma,sans-serif;color:#172033}
+header{background:linear-gradient(135deg,#244b70,#527b9f);color:#fff;padding:18px 14px;text-align:center}
+header h1{margin:0 0 5px;font-size:25px}
+header p{margin:0;font-size:12px}
+main{max-width:1250px;margin:auto;padding:12px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px;box-shadow:0 3px 12px #0001}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+label{display:block;font-size:11px;font-weight:bold;color:#46515d;margin-bottom:4px}
+select,input{width:100%;padding:9px;border:1px solid #bdc7d4;border-radius:7px;background:#fff;font:inherit}
+.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+button{border:0;border-radius:7px;padding:10px 14px;font-weight:bold;cursor:pointer}
+.primary{background:var(--blue);color:#fff}.gold{background:var(--gold);color:#172033}
+.status{font-size:11px;color:#667684;margin-top:8px}
+.viewer{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px}
+iframe{width:100%;height:calc(100vh - 250px);min-height:700px;border:0;background:#fff}
+.note{font-size:11px;color:#667684;margin-top:8px;line-height:1.45}
+@media(max-width:800px){.grid{grid-template-columns:1fr 1fr}iframe{height:78vh;min-height:680px}}
+@media(max-width:480px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+<h1>LEAD ENGLISH</h1>
+<p>Smart Lesson Planner • Grades 1–6 • Grade 5 Master Design • 5E + Siraj</p>
+</header>
+<main>
+<section class="panel">
+<div class="grid">
+<div><label>Grade</label><select id="grade"></select></div>
+<div><label>Semester</label><select id="semester"></select></div>
+<div><label>Unit</label><select id="unit"></select></div>
+<div><label>Lesson</label><select id="lesson"></select></div>
+</div>
+<div class="grid" style="margin-top:9px">
+<div><label>Teacher</label><input id="teacher" value="T. Marina Al_ Baqaeen"></div>
+<div><label>Class / Section</label><input id="className"></div>
+<div><label>Date</label><input id="date" type="date"></div>
+<div><label>Status</label><input id="status" readonly></div>
+</div>
+<div class="actions">
+<button class="primary" id="open">Open / Refresh Lesson</button>
+<button class="gold" id="print">Print / Save PDF</button>
+</div>
+<div class="status" id="details"></div>
+<div class="note">
+This package contains the curriculum planner files locally. The main selector is only a launcher:
+the actual lesson-preparation sheet is the supplied planner page, so the A4/5E/Siraj design is preserved.
+There is no dependency on missing GitHub source files.
+</div>
+</section>
+<section class="viewer"><iframe id="view" title="Actual Lesson Preparation Sheet"></iframe></section>
+</main>
+
+<script>
+const SOURCES={
+1:"grade1_source.html",
+2:"grade2_source.html",
+3:"grade3_source.html",
+4S1:"Grade4_Jordan_TeamTogether_S1_Daily_Planner.html",
+4S2:"Grade4_Jordan_TeamTogether_S2_5E_Siraj_Lesson_Planner-3.html",
+5:"grade5_source.html",
+6:"grade6_source.html"
+};
+const $=id=>document.getElementById(id);
+let inner=null, currentSrc="";
+
+for(let g=1;g<=6;g++) $("grade").add(new Option("Grade "+g,g));
+$("grade").value="5";
+$("className").value="Grade 5";
+$("date").value=new Date().toISOString().slice(0,10);
+
+function sourceFor(){
+  const g=Number($("grade").value);
+  const sem=$("semester").value;
+  if(g===4) return sem==="2"?SOURCES["4S2"]:SOURCES["4S1"];
+  return SOURCES[String(g)];
+}
+
+function openSource(){
+  currentSrc=sourceFor();
+  $("status").value="Loading planner…";
+  $("view").src=currentSrc;
+}
+
+function getEl(id1,id2){
+  if(!inner) return null;
+  return inner.document.getElementById(id1)||inner.document.getElementById(id2)||null;
+}
+
+function copyOptions(target,source){
+  target.innerHTML="";
+  if(!source) return;
+  [...source.options].forEach(o=>target.add(new Option(o.textContent,o.value)));
+}
+
+function syncFromPlanner(){
+  if(!inner) return;
+  const sem=getEl("semester","sem");
+  const unit=getEl("unit");
+  const lesson=getEl("lesson");
+
+  // Semester
+  if(sem){
+    const wanted=$("semester").value;
+    copyOptions($("semester"),sem);
+    if([...$("semester").options].some(o=>o.value===wanted)) $("semester").value=wanted;
+  }else{
+    $("semester").innerHTML='<option value="1">Semester 1</option><option value="2">Semester 2</option>';
+  }
+
+  copyOptions($("unit"),unit);
+  copyOptions($("lesson"),lesson);
+
+  $("status").value="Ready";
+  $("details").textContent =
+    "Grade "+$("grade").value+" • "+($("semester").selectedOptions[0]?.textContent||"")+
+    " • "+($("unit").selectedOptions[0]?.textContent||"")+
+    " • "+($("lesson").selectedOptions[0]?.textContent||"");
+}
+
+function chooseInner(id1,id2,value){
+  const el=getEl(id1,id2);
+  if(!el) return;
+  el.value=value;
+  el.dispatchEvent(new Event("change",{bubbles:true}));
+}
+
+$("view").addEventListener("load",()=>{
+  inner=$("view").contentWindow;
+  setTimeout(syncFromPlanner,100);
+  setTimeout(syncFromPlanner,400);
+  setTimeout(syncFromPlanner,900);
+});
+
+$("grade").onchange=()=>{
+  $("className").value="Grade "+$("grade").value;
+  $("semester").value="1";
+  openSource();
+};
+
+$("semester").onchange=()=>{
+  if(Number($("grade").value)===4) openSource();
+  else chooseInner("semester","sem",$("semester").value);
+};
+
+$("unit").onchange=()=>{
+  chooseInner("unit","unit",$("unit").value);
+  setTimeout(syncFromPlanner,150);
+};
+
+$("lesson").onchange=()=>{
+  chooseInner("lesson","lesson",$("lesson").value);
+  // Different planners use different generation buttons/functions.
+  setTimeout(()=>{
+    if(!inner)return;
+    const buttons=[...inner.document.querySelectorAll("button")];
+    const b=buttons.find(x=>/generate|lesson plan|5e/i.test(x.textContent));
+    if(b) b.click();
+    syncFromPlanner();
+  },180);
+};
+
+$("open").onclick=()=>{
+  if(!inner) openSource();
+  else {
+    const u=getEl("unit"),l=getEl("lesson");
+    if(u) chooseInner("unit","unit",$("unit").value);
+    if(l) chooseInner("lesson","lesson",$("lesson").value);
+    setTimeout(syncFromPlanner,250);
+  }
+};
+
+$("print").onclick=()=>{
+  if(inner){inner.focus();inner.print();}
+};
+
+openSource();
+</script>
+</body>
+</html>
