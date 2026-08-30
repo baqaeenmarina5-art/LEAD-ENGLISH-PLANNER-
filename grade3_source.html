@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grade 3 English Daily Lesson Planner | 5E + Siraj</title>
+<style>
+@page{size:A4 portrait;margin:5mm}
+*{box-sizing:border-box}
+body{margin:0;background:#e9edf1;color:#18232c;font-family:Arial,Helvetica,sans-serif}
+.app{width:210mm;margin:10px auto}
+.controls{background:#17324d;color:#fff;padding:12px;border-radius:8px}
+.controls h1{font-size:17px;margin:0 0 3px}.controls p{font-size:9px;margin:0 0 7px;opacity:.9}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:5px 0}
+label{display:block;font-size:8px;font-weight:bold;margin-bottom:2px}
+input,select,textarea{width:100%;padding:5px;border:1px solid #cbd5dc;border-radius:4px;font-size:11px;background:#fff;color:#111}
+textarea{height:43px;resize:vertical}
+button{border:0;border-radius:4px;padding:7px 10px;margin:4px 3px 0 0;font-weight:bold;cursor:pointer}
+.primary{background:#fff;color:#17324d}.green{background:#55a47e;color:#fff}.gold{background:#e7bb52;color:#17212b}
+.sheet{width:210mm;min-height:297mm;background:#fff;margin:10px auto;padding:5.5mm;box-shadow:0 2px 12px #0002}
+.title{text-align:center;font-size:15px;font-weight:bold;margin-bottom:4px}
+.info,.outcomes,.plan,.sign{width:100%;border-collapse:collapse;table-layout:fixed}
+.info td,.outcomes td,.plan th,.plan td,.sign td{border:1px solid #555;padding:3px 4px;vertical-align:top}
+.info td{font-size:7.6px;height:16px}.label,.plan th{background:#dfe7eb;font-weight:bold}
+.section{font-size:8.8px;font-weight:bold;margin:4px 0 2px}
+.outcomes td{font-size:7.3px;line-height:1.12}.outcomes .label{width:18%}
+.plan th{font-size:7.1px;text-align:center}.plan td{font-size:6.65px;line-height:1.12}
+.stage{width:11%;background:#eef2f4;font-weight:bold}.teacher{width:35%}.learner{width:35%}.time{width:7%;text-align:center}.assess{width:12%}
+.siraj{margin-top:2px;padding-top:2px;border-top:1px dotted #888}
+.bottom{display:grid;grid-template-columns:30% 70%;gap:4px;margin-top:4px}
+.reflection{height:28mm;border:1px solid #555;padding:3px;font-size:7px;font-weight:bold}
+.lines{height:22mm;margin-top:2px;background:repeating-linear-gradient(to bottom,transparent 0,transparent 7px,#999 8px)}
+.small td{font-size:6.6px;height:14px}.sign{margin-top:4px}.sign td{text-align:center;font-size:6.2px;height:21px}
+.footer{display:flex;justify-content:space-between;font-size:5.8px;margin-top:2px}
+.hint{font-size:6.5px;margin-top:2px;color:#555}
+@media print{body{background:#fff}.controls{display:none}.app{width:auto;margin:0}.sheet{margin:0;box-shadow:none}}
+@media(max-width:850px){.app,.sheet{width:100%}.grid{grid-template-columns:1fr 1fr}.bottom{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<section class="controls">
+<h1>Grade 3 English Daily Lesson Planner</h1>
+<p>Jordan Team Together • Semester 1 + Semester 2 • English-only • 5E • Siraj integrated into Teacher and Learner roles</p>
+<div class="grid">
+<div><label>Semester</label><select id="semester"></select></div>
+<div><label>Unit</label><select id="unit"></select></div>
+<div><label>Lesson</label><select id="lesson"></select></div>
+<div><label>Date</label><input id="date" type="date"></div>
+<div><label>Teacher</label><input id="teacher" value="T. Marina"></div>
+<div><label>Grade</label><input id="grade" value="Grade 3"></div>
+<div><label>Class / Section</label><input id="classSection"></div>
+<div><label>Duration</label><input id="duration" value="45 minutes"></div>
+</div>
+<div class="grid">
+<div><label>Learning Objectives</label><textarea id="objectives"></textarea></div>
+<div><label>Vocabulary</label><textarea id="vocab"></textarea></div>
+<div><label>Language / Function</label><textarea id="language"></textarea></div>
+<div><label>Phonics / Reading</label><textarea id="phonics"></textarea></div>
+</div>
+<div>
+<button class="primary" onclick="generatePlan()">Generate Plan</button>
+<button class="green" onclick="window.print()">Print / Save as PDF</button>
+<button class="gold" onclick="resetPlan()">Reset</button>
+</div>
+<div class="hint">All fields remain editable before printing. Semester 2 lessons are intentionally editable where the attached source does not provide the Teacher’s Book text.</div>
+</section>
+
+<section class="sheet">
+<div class="title">DAILY LESSON PLAN</div>
+<table class="info">
+<tr><td class="label">Grade</td><td id="pgrade"></td><td class="label">Subject</td><td>English Language</td></tr>
+<tr><td class="label">Semester</td><td id="psemester"></td><td class="label">Unit</td><td id="punit"></td></tr>
+<tr><td class="label">Lesson</td><td id="plesson"></td><td class="label">Pages</td><td id="ppages"></td></tr>
+<tr><td class="label">Teacher</td><td id="pteacher"></td><td class="label">Date</td><td id="pdate"></td></tr>
+<tr><td class="label">Class / Section</td><td id="pclass"></td><td class="label">Duration</td><td id="pduration"></td></tr>
+</table>
+
+<div class="section">LEARNING OUTCOMES</div>
+<table class="outcomes">
+<tr><td class="label">Learning Objectives</td><td id="pobj"></td></tr>
+<tr><td class="label">Vocabulary</td><td id="pvocab"></td></tr>
+<tr><td class="label">Language / Function</td><td id="planguage"></td></tr>
+<tr><td class="label">Phonics / Reading</td><td id="pphonics"></td></tr>
+</table>
+
+<div class="section">5E LESSON FLOW</div>
+<table class="plan">
+<thead><tr><th class="stage">5E</th><th class="teacher">Teacher Role + Siraj</th><th class="learner">Learner Role + Siraj</th><th class="time">Time</th><th class="assess">Assessment</th></tr></thead>
+<tbody id="planRows"></tbody>
+</table>
+
+<div class="bottom">
+<div class="reflection">Self-Reflection<div class="lines"></div></div>
+<table class="small">
+<tr><td class="label">Class / Section</td><td id="rclass"></td></tr>
+<tr><td class="label">Absent / Total</td><td></td></tr>
+<tr><td class="label">Timetable Order</td><td></td></tr>
+<tr><td class="label">Day / Date</td><td id="rdate"></td></tr>
+</table>
+</div>
+
+<table class="sign">
+<tr><td>Teacher Signature<br>________________</td><td>Supervisor Signature<br>________________</td><td>Principal Signature<br>________________</td><td>School Development Consultant<br>________________</td></tr>
+</table>
+<div class="footer"><span>Grade 3 English • 5E + Siraj</span><span>A4 Daily Lesson Plan</span></div>
+</section>
+</div>
+
+<script>
+const curriculum={"Semester 1": {"Unit 1 — It’s a happy day!": {"pages": "8–15", "vocab": "get up; have breakfast; go to school; have art lessons; play with my friends; go home; have lunch; do homework; have dinner; go to bed; morning; afternoon; evening; night", "grammar": "I play / I don’t play. We have / We don’t have lunch. When do you go home? We go home in the afternoon.", "phonics": "pl / bl — play, plane, plum, plug, blue, blond, black, block", "lessons": [["Lesson 1 — Vocabulary & Grammar 1", "Identify and use daily routine vocabulary and affirmative/negative statements.", "Daily routines; I play / I don’t play; We have / We don’t have lunch."], ["Lesson 2 — Story: Bo is colourful!", "Understand and sequence the story and identify key vocabulary.", "Simple statements about school and art activities."], ["Lesson 3 — CLIL / Values", "Talk about colours, teamwork and classroom actions.", "We have / don’t have; You go / don’t go to school."], ["Lesson 4 — Vocabulary & Grammar", "Identify times of day and ask about routines.", "morning, afternoon, evening, night; When do you…?"], ["Lesson 5 — Vocabulary & Grammar", "Ask and answer about daily routines and times.", "When do you go to school/play tennis/do homework/go to bed?"], ["Lesson 6 — Skills", "Listen and speak about routines and times.", "Answering questions about routines and times."], ["Lesson 7 — Skills / Project", "Create and present a simple breakfast menu.", "This is … / We have …"], ["Lesson 8 — Culture", "Read for specific information and compare breakfasts.", "Traditional breakfasts."], ["Lesson 9 — Phonics", "Recognise and pronounce /pl/ and /bl/.", "pl / bl + tongue twister."], ["Lesson 10 — English in Action", "Ask and answer about the time.", "What time is it? / It’s … o’clock."]]}, "Unit 2 — Let’s dress up!": {"pages": "16–23", "vocab": "dress; sandals; socks; hat; scarf; jeans; pyjamas; trainers; baseball cap; shirt; glasses; keys; handbag; backpack; phone; computer", "grammar": "You’re / They’re wearing …; Our … are …; Your … are …; Their … are …", "phonics": "dr / tr / br", "lessons": [["Lesson 1 — Vocabulary & Grammar 2", "Identify clothes and describe what people are wearing.", "You’re/They’re wearing jeans and trainers."], ["Lesson 2 — Story: Dress-up Day", "Understand and sequence the story.", "Clothes vocabulary in context."], ["Lesson 3 — CLIL / Values", "Talk about recycling and reusing clothes.", "Describing clothes and values."], ["Lesson 4 — Vocabulary & Grammar", "Identify possessions and describe colours.", "Our glasses are blue. Your keys are grey."], ["Lesson 5 — Vocabulary & Grammar", "Use possessive adjectives with nouns and colours.", "Our / Your / Their + noun + colour."], ["Lesson 6 — Skills", "Listen, colour and speak about clothes and possessions.", "Describing clothes and possessions."], ["Lesson 7 — Project", "Create and present a poster about a special day.", "This is … They’re wearing …"], ["Lesson 8 — Culture", "Read and discuss parades.", "Parades around the world."], ["Lesson 9 — English in Action", "Ask and answer about price.", "How much is this …? It’s … JD."], ["Lesson 10 — Phonics", "Recognise and pronounce /dr/, /tr/ and /br/.", "Phonics + tongue twister."]]}, "Unit 3 — The activity centre": {"pages": "24–31", "vocab": "watch TV; play table tennis; read books; play badminton; play video games; play tennis; play basketball; roller skate; skateboard; do karate; Sunday–Saturday; the weekend", "grammar": "He/She plays … He/She doesn’t … Does he/she …? Yes, he/she does. No, he/she doesn’t.", "phonics": "sk / sw / st", "lessons": [["Lesson 1 — Vocabulary & Grammar 3", "Identify activities and use the present simple for he/she.", "He/She plays … He/She doesn’t …"], ["Lesson 2 — Story: Where’s Laila?", "Understand the story and locate specific information.", "Does she play …?"], ["Lesson 3 — CLIL / Values", "Talk about activities, helping and relationships.", "Actions and events."], ["Lesson 4 — Vocabulary & Grammar", "Identify and say the days of the week.", "Sunday–Saturday; activities by day."], ["Lesson 5 — Vocabulary & Grammar", "Ask and answer yes/no questions about activities.", "Does he/she … on …?"], ["Lesson 6 — Skills", "Listen and identify activities and days.", "Identifying activities and days."], ["Lesson 7 — Project", "Create and present a favourite sports book.", "… likes … He/She plays …"], ["Lesson 8 — Culture", "Read and talk about rugby and tennis.", "Sports in context."], ["Lesson 9 — English in Action", "Express preferences about activities.", "What do you like doing? I love / like / don’t like …"], ["Lesson 10 — Phonics", "Recognise and pronounce /sk/, /sw/ and /st/.", "Phonics + tongue twister."]]}, "Unit 4 — I want to be a teacher!": {"pages": "32–39", "vocab": "teacher; doctor; nurse; firefighter; astronaut; pilot; police officer; builder; chef; artist; bus; boat; underground; train; motorbike; car", "grammar": "I want to be a … He/She goes to work by …", "phonics": "wh", "lessons": [["Lesson 1 — Vocabulary & Grammar 4", "Identify jobs and express a future aspiration.", "I want to be a pilot/doctor/teacher."], ["Lesson 2 — Story: The job fair", "Understand the story and job descriptions.", "Jobs + reading."], ["Lesson 3 — CLIL / Values", "Talk about dreams and future jobs.", "Jobs and aspirations."], ["Lesson 4 — Vocabulary & Grammar", "Identify transport and describe how people travel.", "He/She goes to work by …"], ["Lesson 5 — Vocabulary & Grammar", "Match people, jobs and transport.", "Jobs + transport."], ["Lesson 6 — Skills", "Ask and answer about jobs and transport.", "Who is the …? How does he/she go to work?"], ["Lesson 7 — Project", "Collect and present simple school-travel data.", "Graph and presentation."], ["Lesson 8 — Culture", "Read and discuss jobs and transport.", "Jobs/transport in context."], ["Lesson 9 — English in Action", "Use simple functional language for buying tickets.", "Buying tickets."], ["Lesson 10 — Phonics", "Recognise and pronounce /wh/.", "wh + tongue twister."]]}}, "Semester 2": {"Unit 5 — Fun on the farm": {"pages": "8–15", "vocab": "chicken; cow; donkey; duck; goat; horse; sheep; bird; bee; turkey; collect the eggs; milk the cows; brush the horses; fix the gate; sweep the barn; clean the cage", "grammar": "Is he/she …? Yes, he/she is. No, he/she isn’t. Are they …? Yes, they are. No, they aren’t.", "phonics": "Unit 5 phonics — edit if needed", "lessons": [["Lesson 1 — Vocabulary & Grammar", "Edit the objective to match the Teacher’s Book for this lesson.", "Edit the language focus from the Teacher’s Book."], ["Lesson 2 — Vocabulary & Grammar", "Edit the objective to match the Teacher’s Book for this lesson.", "Edit the language focus from the Teacher’s Book."], ["Lesson 3 — Story", "Edit the objective to match the Teacher’s Book for this lesson.", "Edit the language focus from the Teacher’s Book."], ["Lesson 4 — Story", "Edit the objective to match the Teacher’s Book for this lesson.", "Edit the language focus from the Teacher’s Book."], ["Lesson 5 — Vocabulary & Grammar", "Edit the objective to match the Teacher’s Book for this lesson.", "Edit the language focus from the Teacher’s Book."], ["Lesson 6 — Vocabulary & Grammar", "Edit the objective to match the Teacher’s Book for this lesson.", "Edit the language focus from the Teacher’s Book."], ["Lesson 7 — Skills", "Edit the objective to match the Teacher’s Book for this lesson.", "Edit the language focus from the Teacher’s Book."], ["Lesson 8 — Culture / Project", "Edit the objective to match the Teacher’s Book for this lesson.", "Edit the language focus from the Teacher’s Book."], ["Lesson 9 — English in Action", "Edit the objective to match the Teacher’s Book for this lesson.", "Edit the language focus from the Teacher’s Book."], ["Lesson 10 — Phonics", "Edit the objective to match the Teacher’s Book for this lesson.", "Edit the language focus from the Teacher’s Book."]]}, "Unit 6 — Out in the forest": {"pages": "16–23", "vocab": "dirty; clean; old; new; plain; fancy; hard; soft; wet; dry; tent; sleeping bag; shampoo; toothpaste; sunscreen; torch", "grammar": "I haven’t got … Have you got …? Has he/she got …? Yes/No.", "phonics": "/cl/ /sl/ /fl/", "lessons": [["Lesson 1", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."], ["Lesson 2", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."], ["Lesson 3", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."], ["Lesson 4", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."], ["Lesson 5", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."], ["Lesson 6", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."], ["Lesson 7", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."], ["Lesson 8", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."], ["Lesson 9", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."], ["Lesson 10", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."]]}, "Unit 7 — Look at the stars": {"pages": "24–31", "vocab": "door; window; sofa; armchair; television; bed; wardrobe; mirror; clock; bookcase; in front of; next to; opposite; behind; between", "grammar": "There’s … There are … There isn’t … There aren’t …", "phonics": "ck / ch / sh / th", "lessons": [["Lesson 1", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."], ["Lesson 2", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."], ["Lesson 3", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."], ["Lesson 4", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."], ["Lesson 5", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."], ["Lesson 6", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."], ["Lesson 7", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."], ["Lesson 8", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."], ["Lesson 9", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."], ["Lesson 10", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."]]}, "Unit 8 — Animals are fun!": {"pages": "32–39", "vocab": "monkey; tiger; hippo; giraffe; zebra; elephant; crocodile; penguin; eagle; kangaroo", "grammar": "Can / can’t for ability; action vocabulary.", "phonics": "Unit 8 phonics — edit if needed", "lessons": [["Lesson 1", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."], ["Lesson 2", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."], ["Lesson 3", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."], ["Lesson 4", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."], ["Lesson 5", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."], ["Lesson 6", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."], ["Lesson 7", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."], ["Lesson 8", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."], ["Lesson 9", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."], ["Lesson 10", "Edit the objective from the Teacher’s Book.", "Edit the language focus from the Teacher’s Book."]]}}};
+const stages=[
+["Engage","6 min","Diagnostic questioning"],
+["Explore","10 min","Observation / task evidence"],
+["Explain","9 min","CCQs / quick check"],
+["Elaborate","13 min","Performance / checklist"],
+["Evaluate","7 min","Exit ticket / self-assessment"]
+];
+
+const teacherBase={
+Engage:"Activates prior knowledge, introduces the lesson context and uses the selected lesson content to create a meaningful entry point.",
+Explore:"Guides the relevant Student Book/Activity Book task, models the procedure and organises pair/group exploration.",
+Explain:"Elicits meaning and form from lesson examples, models pronunciation/usage and checks understanding.",
+Elaborate:"Provides a communicative transfer task based on the lesson objective and differentiates support.",
+Evaluate:"Checks the stated objective through a short formative task and records evidence of learning."
+};
+const learnerBase={
+Engage:"Responds, predicts and recalls relevant language from previous learning.",
+Explore:"Explores, listens, reads, matches, notices or discusses the target content with peers.",
+Explain:"Identifies the pattern, asks questions, repeats and produces supported examples.",
+Elaborate:"Applies the target language/skill in pairs, groups or individually and communicates meaning.",
+Evaluate:"Completes the task independently, self-assesses and corrects where needed."
+};
+const sirajTeacher={
+Engage:"Provides a short diagnostic prompt, visual clue or question; it does not replace teacher judgement.",
+Explore:"Models one example, offers a hint and supports differentiation without giving the answer immediately.",
+Explain:"Provides an extra example, pronunciation support and a quick comprehension check.",
+Elaborate:"Acts as a guided practice partner for questioning, modelling and formative feedback.",
+Evaluate:"Supports self-checking and formative feedback; the teacher makes the final judgement."
+};
+const sirajLearner={
+Engage:"Uses the prompt to activate prior knowledge and recall target vocabulary.",
+Explore:"Uses a hint only when needed and explains the choice.",
+Explain:"Uses supported practice to repeat, produce and self-correct.",
+Elaborate:"Uses Siraj as a practice partner, rehearses, receives feedback and retries.",
+Evaluate:"Uses feedback to self-check and improve after completing the independent task."
+};
+
+function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
+
+function fillSemesters(){
+const s=document.getElementById("semester");
+s.innerHTML="";
+Object.keys(curriculum).forEach(x=>s.add(new Option(x,x)));
+fillUnits();
+}
+function fillUnits(){
+const s=document.getElementById("semester").value,u=document.getElementById("unit");
+u.innerHTML="";
+Object.keys(curriculum[s]).forEach(x=>u.add(new Option(x,x)));
+fillLessons();
+}
+function fillLessons(){
+const s=document.getElementById("semester").value,u=document.getElementById("unit").value,l=document.getElementById("lesson");
+l.innerHTML="";
+curriculum[s][u].lessons.forEach((x,i)=>l.add(new Option(x[0],i)));
+autofill();
+}
+function autofill(){
+const s=document.getElementById("semester").value,u=document.getElementById("unit").value,i=Number(document.getElementById("lesson").value)||0;
+const d=curriculum[s][u],l=d.lessons[i];
+document.getElementById("objectives").value=l[1];
+document.getElementById("vocab").value=d.vocab;
+document.getElementById("language").value=l[2]||d.grammar;
+document.getElementById("phonics").value=d.phonics;
+generatePlan();
+}
+function generatePlan(){
+const s=document.getElementById("semester").value,u=document.getElementById("unit").value,i=Number(document.getElementById("lesson").value)||0;
+const d=curriculum[s][u],l=d.lessons[i];
+document.getElementById("pgrade").textContent=document.getElementById("grade").value;
+document.getElementById("psemester").textContent=s;
+document.getElementById("punit").textContent=u;
+document.getElementById("plesson").textContent=l[0];
+document.getElementById("ppages").textContent=d.pages;
+document.getElementById("pteacher").textContent=document.getElementById("teacher").value;
+document.getElementById("pdate").textContent=document.getElementById("date").value||"________________";
+document.getElementById("pclass").textContent=document.getElementById("classSection").value;
+document.getElementById("pduration").textContent=document.getElementById("duration").value;
+document.getElementById("rclass").textContent=document.getElementById("classSection").value;
+document.getElementById("rdate").textContent=document.getElementById("date").value||"";
+document.getElementById("pobj").innerHTML=esc(document.getElementById("objectives").value).replace(/\n/g,"<br>");
+document.getElementById("pvocab").innerHTML=esc(document.getElementById("vocab").value).replace(/\n/g,"<br>");
+document.getElementById("planguage").innerHTML=esc(document.getElementById("language").value).replace(/\n/g,"<br>");
+document.getElementById("pphonics").innerHTML=esc(document.getElementById("phonics").value).replace(/\n/g,"<br>");
+document.getElementById("planRows").innerHTML=stages.map(x=>{
+const stage=x[0];
+return `<tr>
+<td class="stage">${stage}</td>
+<td class="teacher">${teacherBase[stage]}<div class="siraj"><b>Siraj:</b> ${sirajTeacher[stage]}</div></td>
+<td class="learner">${learnerBase[stage]}<div class="siraj"><b>Siraj:</b> ${sirajLearner[stage]}</div></td>
+<td class="time">${x[1]}</td>
+<td class="assess">${x[2]}</td>
+</tr>`;
+}).join("");
+}
+function resetPlan(){
+document.getElementById("date").value="";
+document.getElementById("classSection").value="";
+document.getElementById("teacher").value="T. Marina";
+document.getElementById("grade").value="Grade 3";
+document.getElementById("duration").value="45 minutes";
+fillSemesters();
+}
+document.getElementById("semester").addEventListener("change",fillUnits);
+document.getElementById("unit").addEventListener("change",fillLessons);
+document.getElementById("lesson").addEventListener("change",autofill);
+fillSemesters();
+</script>
+</body>
+</html>
