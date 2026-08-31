@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LEAD ENGLISH — Smart Lesson Planner Grades 1–6</title>
+<style>
+:root{--navy:#17324d;--blue:#2f6f9f;--blue2:#d9e8f7;--green:#dfeeda;--yellow:#fff2cc;--peach:#fce4d6;--line:#222;--bg:#eef1f5}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#111;font-family:Arial,Helvetica,sans-serif}
+.app{max-width:1500px;margin:auto;padding:14px}
+.head{background:linear-gradient(135deg,#17324d,#2f6f9f);color:#fff;padding:22px 18px;border-radius:14px 14px 8px 8px;text-align:center;margin-bottom:12px}
+.head h1{margin:0 0 5px;font-size:25px}.head p{margin:0;font-size:14px}
+.controls{background:#fff;border:1px solid #ccd4df;border-radius:10px;padding:14px;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:9px}
+.f{display:flex;flex-direction:column;gap:4px}.f label{font-size:11px;font-weight:bold;color:#435166}
+input,select,textarea{font:inherit;border:1px solid #bdc7d4;border-radius:6px;padding:8px;width:100%;background:#fff}
+textarea{min-height:55px;resize:vertical}.s2{grid-column:span 2}.s3{grid-column:span 3}.s6{grid-column:span 6}
+.btns{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+button{border:0;border-radius:7px;padding:10px 13px;background:var(--blue);color:white;font-weight:bold;cursor:pointer}
+button.alt{background:#e7ecf2;color:#22334a}button.green{background:#3d8b6d}
+.status{font-size:12px;color:#435166;margin-top:7px}
+#sourceFrame{display:none}
+.paper{width:297mm;min-height:210mm;max-width:100%;margin:0 auto;background:#fff;padding:8mm;box-shadow:0 1px 8px rgba(0,0,0,.12)}
+.header-title{text-align:center;font-size:18px;font-weight:800;margin-bottom:4px}.header-sub{text-align:center;font-size:9px;margin-bottom:6px}
+.meta{display:grid;grid-template-columns:1fr 1.2fr 1.7fr 1.9fr;border:1.5px solid var(--line)}
+.meta-cell{border-right:1px solid var(--line)}.meta-cell:last-child{border-right:0}
+.label{background:var(--blue2);font-weight:800;padding:4px 6px;font-size:9px}.value{padding:4px 6px;min-height:23px;font-size:10px}
+.section-title{margin-top:5px;border:1.5px solid var(--line);border-bottom:0;background:var(--blue2);font-weight:800;text-align:center;padding:4px;font-size:10px}
+.outcomes{border:1.5px solid var(--line);display:grid;grid-template-columns:105px 1fr}
+.outcome-label{font-weight:800;padding:7px;font-size:10px;border-right:1px solid var(--line)}
+.outcome-content{padding:6px;font-size:10.5px;line-height:1.3}.outcome-content ol{margin:0;padding-left:20px}.outcome-content li{margin-bottom:2px}
+.lesson-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:9.5px;line-height:1.25}
+.lesson-table th,.lesson-table td{border:1.3px solid var(--line);padding:5px;vertical-align:top}
+.lesson-table th{background:#d9e2f3;text-align:center;font-weight:800}
+.lesson-table th.stage{width:17%}.lesson-table th.teacher{width:33%}.lesson-table th.learner{width:33%}.lesson-table th.time{width:9%}.lesson-table th.assess{width:18%}
+.stage-cell{font-weight:800;text-align:center}.stage-1{background:var(--blue2)}.stage-2{background:var(--green)}.stage-3{background:var(--yellow)}.stage-4{background:var(--peach)}
+.bottom-grid{display:grid;grid-template-columns:1fr 2.2fr;margin-top:5px}
+.reflection{border:1.5px solid var(--line);min-height:105px;background:#d9e2f3}
+.reflection-title{font-weight:800;padding:5px;font-size:9px;border-bottom:1px solid var(--line)}.reflection-text{padding:6px;font-size:9px;min-height:75px}
+.record{border-collapse:collapse;width:100%;font-size:8.5px}.record td,.record th{border:1px solid var(--line);padding:4px}.record th{background:var(--blue2);text-align:left}.blank{height:27px}
+.signatures{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:7px;font-size:8.5px}.signature{border-top:1px solid #333;padding-top:4px;min-height:23px}
+.footer{text-align:right;font-size:8px;margin-top:4px;font-weight:bold}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.s2,.s3,.s6{grid-column:span 2}}
+@media(max-width:560px){.grid{grid-template-columns:1fr}.s2,.s3,.s6{grid-column:span 1}}
+@media print{
+ @page{size:A4 landscape;margin:6mm}body{background:#fff;padding:0}.app{max-width:none;padding:0}.head,.controls{display:none!important}
+ .paper{width:100%;max-width:none;min-height:0;padding:0;box-shadow:none}.section-title,.outcomes,.lesson-table,.bottom-grid,.signatures{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="head">
+<h1>LEAD ENGLISH</h1>
+<p>Smart Lesson Planner • Grades 1–6 • Jordan Team Together • 5E + Siraj</p>
+</header>
+
+<section class="controls">
+<div class="grid">
+<div class="f s2"><label>Grade</label><select id="grade"></select></div>
+<div class="f"><label>Semester</label><select id="semester"><option value="1">Semester 1</option><option value="2">Semester 2</option></select></div>
+<div class="f s2"><label>Unit</label><select id="unit"></select></div>
+<div class="f s2"><label>Lesson</label><select id="lesson"></select></div>
+<div class="f"><label>Date</label><input id="date" type="date"></div>
+<div class="f"><label>Class / Section</label><input id="className" value=""></div>
+<div class="f s2"><label>Teacher</label><input id="teacher" value="T. Marina Al_ Baqaeen"></div>
+<div class="f"><label>Duration</label><input id="duration" value="45 minutes"></div>
+<div class="f s3"><label>Previous Learning</label><textarea id="prior"></textarea></div>
+<div class="f s3"><label>Learning Objectives</label><textarea id="objectives"></textarea></div>
+<div class="f s3"><label>Vocabulary</label><textarea id="vocab"></textarea></div>
+<div class="f s3"><label>Language / Function / Phonics</label><textarea id="target"></textarea></div>
+</div>
+<div class="btns">
+<button onclick="generate()">Generate Lesson Plan</button>
+<button class="green" onclick="window.print()">Print / Save as PDF</button>
+<button class="alt" onclick="resetForm()">Reset</button>
+</div>
+<div id="status" class="status">Loading curriculum…</div>
+</section>
+
+<iframe id="sourceFrame" title="local curriculum source"></iframe>
+
+<main class="paper" id="paper">
+<div class="header-title">Lesson Plan</div>
+<div class="header-sub">Jordan Team Together - English Language - Daily Planning Form</div>
+
+<div class="meta">
+<div class="meta-cell"><div class="label">Class / Level</div><div class="value" id="p-grade" contenteditable="true"></div></div>
+<div class="meta-cell"><div class="label">Subject</div><div class="value">English Language</div></div>
+<div class="meta-cell"><div class="label">Unit Title</div><div class="value" id="p-unit" contenteditable="true"></div></div>
+<div class="meta-cell"><div class="label">Lesson Title</div><div class="value" id="p-lesson" contenteditable="true"></div></div>
+</div>
+<div class="meta" style="border-top:0">
+<div class="meta-cell" style="grid-column:1 / span 2"><div class="label">Previous Learning</div><div class="value" id="p-prior" contenteditable="true"></div></div>
+<div class="meta-cell" style="grid-column:3 / span 2;border-right:0"><div class="label">Lesson Focus / Resources</div><div class="value" id="p-resources" contenteditable="true">Pupil's Book, Activity Book, board, visuals, audio/digital resources and Siraj.</div></div>
+</div>
+
+<div class="section-title">The Main Outcomes</div>
+<div class="outcomes">
+<div class="outcome-label">Learning Outcomes</div>
+<div class="outcome-content" id="p-objectives" contenteditable="true"></div>
+</div>
+
+<div class="section-title">5E Lesson Procedure - Teacher Role + Siraj - Learner Role + Siraj - Time - Assessment / Evidence</div>
+<table class="lesson-table">
+<thead><tr><th class="stage">5E Stage</th><th class="teacher">Teacher Role + Siraj</th><th class="learner">Learner Role + Siraj</th><th class="time">Time</th><th class="assess">Assessment / Evidence</th></tr></thead>
+<tbody id="tbody"></tbody>
+</table>
+
+<div class="bottom-grid">
+<div class="reflection"><div class="reflection-title">Self-Reflection on Learning and Teaching</div>
+<div class="reflection-text" id="reflection" contenteditable="true">Which learners met the outcomes? Which language needs more recycling? What evidence showed successful participation? What should be adjusted next lesson?</div></div>
+<table class="record">
+<tr><th>Class / Section</th><td class="blank" contenteditable="true"></td><td class="blank" contenteditable="true"></td><td class="blank" contenteditable="true"></td><td class="blank" contenteditable="true"></td></tr>
+<tr><th>Number of absent students / Total number</th><td class="blank" contenteditable="true"></td><td class="blank" contenteditable="true"></td><td class="blank" contenteditable="true"></td><td class="blank" contenteditable="true"></td></tr>
+<tr><th>The class order in the timetable</th><td class="blank" contenteditable="true"></td><td class="blank" contenteditable="true"></td><td class="blank" contenteditable="true"></td><td class="blank" contenteditable="true"></td></tr>
+<tr><th>Day / Date</th><td class="blank" contenteditable="true"></td><td class="blank" contenteditable="true"></td><td class="blank" contenteditable="true"></td><td class="blank" contenteditable="true"></td></tr>
+</table>
+</div>
+<div class="signatures">
+<div class="signature" contenteditable="true">Teacher's Name and Signature:</div>
+<div class="signature" contenteditable="true">Supervisor's Signature:</div>
+<div class="signature" contenteditable="true">Principal's Signature:</div>
+<div class="signature" contenteditable="true">School Development Consultant:</div>
+</div>
+<div class="footer">FORM: Daily Lesson Plan • A4 Landscape • 5E + Siraj</div>
+</main>
+</div>
+
+<script>
+const gradeFiles={
+"1":{1:"grade1_source.html",2:"grade1_source.html"},
+"2":{1:"grade2_source.html",2:"grade2_source.html"},
+"3":{1:"grade3_source.html",2:"grade3_source.html"},
+"4":{1:"Grade4_Jordan_TeamTogether_S1_Daily_Planner.html",2:"Grade4_Jordan_TeamTogether_S2_5E_Siraj_Lesson_Planner-3.html"},
+"5":{1:"grade5_source.html",2:"grade5_source.html"},
+"6":{1:"grade6_source.html",2:"grade6_source.html"}
+};
+const gradeSel=document.getElementById("grade"), semSel=document.getElementById("semester");
+const unitSel=document.getElementById("unit"), lessonSel=document.getElementById("lesson"), frame=document.getElementById("sourceFrame");
+const statusEl=document.getElementById("status");
+const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+
+for(let g=1;g<=6;g++) gradeSel.add(new Option("Grade "+g,String(g)));
+document.getElementById("date").value=new Date().toISOString().slice(0,10);
+
+let ready=false, sourceUrl="", sourceDoc=null;
+
+function sourceControls(doc){
+  const sels=[...doc.querySelectorAll("select")];
+  let unit=null,lesson=null;
+  for(const s of sels){
+    const id=(s.id||"").toLowerCase();
+    const txt=s.parentElement?.innerText?.toLowerCase()||"";
+    if(!unit && (id.includes("unit")||txt.includes("unit"))) unit=s;
+    if(!lesson && (id.includes("lesson")||txt.includes("lesson"))) lesson=s;
+  }
+  return {unit,lesson};
+}
+function getText(doc,ids){
+  for(const id of ids){const e=doc.getElementById(id);if(e)return e.value??e.textContent??""}
+  return "";
+}
+function extractData(){
+  if(!sourceDoc)return;
+  const c=sourceControls(sourceDoc);
+  if(!c.unit||!c.lesson) throw new Error("The selected curriculum source does not expose Unit/Lesson menus.");
+  unitSel.innerHTML="";
+  [...c.unit.options].forEach(o=>unitSel.add(new Option(o.textContent,o.value)));
+  lessonSel.innerHTML="";
+  [...c.lesson.options].forEach(o=>lessonSel.add(new Option(o.textContent,o.value)));
+  unitSel.value=c.unit.value;
+  lessonSel.value=c.lesson.value;
+  ready=true;
+  statusEl.textContent="Curriculum loaded successfully. Unit and Lesson menus are active.";
+  readSourceFields();
+}
+function selectSourceValue(select,value){
+  if(!select)return;
+  select.value=value;
+  select.dispatchEvent(new Event("change",{bubbles:true}));
+}
+async function readSourceFields(){
+  if(!sourceDoc)return;
+  const c=sourceControls(sourceDoc); if(!c.unit||!c.lesson)return;
+  selectSourceValue(c.unit,unitSel.value);
+  await wait(30);
+  selectSourceValue(c.lesson,lessonSel.value);
+  await wait(60);
+  const d=sourceDoc;
+  let prior=getText(d,["meta-prior","prior","previousLearning","previous"]);
+  let obj=getText(d,["objectives","pobj","meta-objectives"]);
+  let vocab=getText(d,["vocab","p-vocab"]);
+  let target=getText(d,["grammar","target","phonics","p-target"]);
+  if(!obj){
+    const out=d.querySelector(".outcomes,#outcomes,[id*=outcome]");
+    if(out)obj=out.innerText||"";
+  }
+  if(!vocab){
+    const e=d.querySelector("[id*=vocab]");
+    if(e)vocab=e.value||e.textContent||"";
+  }
+  if(!target){
+    const e=d.querySelector("[id*=grammar],[id*=target],[id*=phonics]");
+    if(e)target=e.value||e.textContent||"";
+  }
+  document.getElementById("prior").value=prior||"Learners will recycle relevant language and skills from previous lessons.";
+  document.getElementById("objectives").value=obj||"By the end of the lesson, learners will identify and use the target language and demonstrate the lesson skill in a short task.";
+  document.getElementById("vocab").value=vocab||"See selected lesson vocabulary.";
+  document.getElementById("target").value=target||"See selected lesson target language / phonics.";
+  generate();
+}
+function loadSource(){
+  ready=false;
+  const g=gradeSel.value,s=semSel.value;
+  sourceUrl=gradeFiles[g][s];
+  statusEl.textContent="Loading "+sourceUrl+" …";
+  frame.onload=async()=>{
+    try{
+      sourceDoc=frame.contentDocument||frame.contentWindow.document;
+      await wait(120);
+      extractData();
+    }catch(e){statusEl.textContent="Source error: "+e.message;}
+  };
+  frame.onerror=()=>statusEl.textContent="Could not load local source file: "+sourceUrl;
+  frame.src=sourceUrl+"?v="+Date.now();
+}
+unitSel.addEventListener("change",async()=>{
+  if(!ready||!sourceDoc)return;
+  const c=sourceControls(sourceDoc); if(!c.unit)return;
+  selectSourceValue(c.unit,unitSel.value); await wait(50);
+  const opts=[...c.lesson.options];
+  lessonSel.innerHTML="";opts.forEach(o=>lessonSel.add(new Option(o.textContent,o.value)));
+  readSourceFields();
+});
+lessonSel.addEventListener("change",readSourceFields);
+gradeSel.addEventListener("change",loadSource);
+semSel.addEventListener("change",loadSource);
+
+function stageData(){
+ const focus=document.getElementById("target").value||"the selected lesson language and skill";
+ const vocab=document.getElementById("vocab").value||"target vocabulary";
+ return [
+ ["1 - Engage","5 min",
+  "Activate prior learning and connect the lesson to the pupils’ context. State the learning goal and success criteria. Siraj supports the teacher with a short retrieval question, visual cue or diagnostic prompt.",
+  "Respond, recall prior learning and predict the lesson focus. Siraj acts as a guided learning partner by asking a short prompt without replacing the learner’s thinking.",
+  "Diagnostic questioning; participation; prior-knowledge check."],
+ ["2 - Explore / Explain","15 min",
+  "Present and model the selected textbook content, vocabulary and target language. Use think-aloud, pronunciation modelling and guided questioning. Siraj can provide a model, scaffold or alternative example aligned with the objective.",
+  "Observe, listen, read or manipulate the textbook material; notice patterns; answer guided questions and practise the target language. Siraj can give a clue or model when support is needed.",
+  "Teacher monitoring; oral responses; checking questions; textbook evidence."],
+ ["3 - Elaborate","15 min",
+  "Move from controlled practice to meaningful communication using the selected lesson focus: pair/group task, role-play, information gap, project or problem-solving. Differentiate with support/core/challenge prompts. Siraj provides optional differentiated prompts and feedback.",
+  "Apply "+esc(focus)+" and "+esc(vocab)+" in a new context; collaborate, communicate, create or solve. Use Siraj as a support/checking partner, then produce an original response.",
+  "Performance task; peer checking; speaking/reading/writing product."],
+ ["4 - Evaluate / Close","10 min",
+  "Check the learning objective, give targeted feedback and identify misconceptions. Siraj can provide a quick exit question, retrieval check or self-assessment prompt.",
+  "Demonstrate learning independently, complete an exit ticket or short performance, self-assess and state one next step. Siraj supports reflection rather than supplying the final answer.",
+  "Exit ticket; self-assessment; teacher observation; evidence against success criteria."]
+ ];
+}
+function generate(){
+ if(!ready)return;
+ const g="Grade "+gradeSel.value;
+ const unit=unitSel.options[unitSel.selectedIndex]?.textContent||"";
+ const lesson=lessonSel.options[lessonSel.selectedIndex]?.textContent||"";
+ document.getElementById("p-grade").textContent=g;
+ document.getElementById("p-unit").textContent=unit;
+ document.getElementById("p-lesson").textContent=lesson;
+ document.getElementById("p-prior").textContent=document.getElementById("prior").value;
+ document.getElementById("p-objectives").innerHTML="<ol><li>"+esc(document.getElementById("objectives").value).replace(/\n/g,"<br>")+"</li></ol>";
+ const rows=stageData(),tb=document.getElementById("tbody");tb.innerHTML="";
+ rows.forEach((r,i)=>{
+  const tr=document.createElement("tr");
+  const stage=document.createElement("td");stage.className="stage-cell stage-"+(i<3?i+1:4);stage.textContent=r[0];tr.appendChild(stage);
+  const teacher=document.createElement("td");teacher.innerHTML=esc(r[2]).replace(/\n/g,"<br>");tr.appendChild(teacher);
+  const learner=document.createElement("td");learner.innerHTML=esc(r[3]).replace(/\n/g,"<br>");tr.appendChild(learner);
+  const time=document.createElement("td");time.className="time";time.textContent=r[1];tr.appendChild(time);
+  const a=document.createElement("td");a.innerHTML=esc(r[4]);tr.appendChild(a);
+  tb.appendChild(tr);
+ });
+}
+function resetForm(){
+ document.getElementById("teacher").value="T. Marina Al_ Baqaeen";
+ document.getElementById("className").value="";
+ document.getElementById("duration").value="45 minutes";
+ loadSource();
+}
+loadSource();
+</script>
+</body>
+</html>
