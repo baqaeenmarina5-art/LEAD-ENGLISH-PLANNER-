@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LEAD English Planner | Grades 1–6</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#eef3f7;color:#172f46;font-family:Arial,Helvetica,sans-serif}
+header{background:#173b63;color:#fff;text-align:center;padding:20px 12px}
+header h1{margin:0;font-size:28px}
+header p{margin:6px 0 0;font-size:13px}
+.container{max-width:1100px;margin:20px auto;padding:0 14px}
+.card{background:#fff;border:1px solid #cbd6df;border-radius:16px;padding:22px;box-shadow:0 5px 18px rgba(0,0,0,.08)}
+.setup h2{margin-top:0}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.field label{display:block;font-weight:bold;font-size:13px;margin-bottom:6px}
+select,input,textarea{width:100%;padding:11px;border:1px solid #b9c7d2;border-radius:9px;font:inherit;background:#fff}
+button{border:0;border-radius:9px;padding:11px 17px;font-weight:bold;font-size:14px;cursor:pointer}
+.primary{background:#173b63;color:#fff}
+.secondary{background:#e6edf3;color:#173b63}
+.full{width:100%}
+#planner{display:none}
+.toolbar{display:flex;justify-content:flex-end;gap:8px;margin-bottom:10px}
+.paper{background:#fff;padding:9mm;border:1px solid #aebbc5}
+.paper-title{text-align:center;margin-bottom:8px}
+.paper-title h2{margin:0;font-family:Georgia,serif;font-size:23px}
+.paper-title p{margin:4px 0;font-size:10px}
+.info{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid #555}
+.info div{padding:7px;border-right:1px solid #555;border-bottom:1px solid #555;font-size:10px;min-height:36px}
+.info div:nth-child(4n){border-right:0}
+.info b{display:block;font-size:8px;margin-bottom:3px}
+.editable{outline:none}
+.editable:focus{box-shadow:inset 0 0 0 2px #6d9fc4}
+.objective{border:1px solid #555;margin-top:8px;padding:8px;font-size:10px}
+.objective b{display:block;margin-bottom:4px}
+table{width:100%;border-collapse:collapse;margin-top:8px;table-layout:fixed;font-size:10px}
+th,td{border:1px solid #555;padding:7px;vertical-align:top}
+th{background:#dce7ef;text-align:center}
+th:nth-child(1){width:14%}
+th:nth-child(2){width:39%}
+th:nth-child(3){width:39%}
+th:nth-child(4){width:8%}
+.stage{text-align:center;font-weight:bold}
+.s1{background:#dceaf7}.s2{background:#e4f1df}.s3{background:#fff0c6}.s4{background:#f1e4f5}.s5{background:#f7dddd}
+.bottom{display:grid;grid-template-columns:1fr 1fr;margin-top:8px}
+.bottom>div{border:1px solid #555;padding:7px;font-size:9px;min-height:70px}
+.bottom>div+div{border-left:0}
+.bottom textarea{border:0;padding:0;resize:vertical;min-height:55px}
+.note{font-size:11px;color:#667785;margin-top:12px}
+@media(max-width:800px){.grid{grid-template-columns:1fr 1fr}.info{grid-template-columns:1fr 1fr}.info div:nth-child(4n){border-right:1px solid #555}.info div:nth-child(2n){border-right:0}}
+@media print{
+ @page{size:A4 landscape;margin:6mm}
+ body{background:#fff}
+ header,.setup,.toolbar,.note{display:none!important}
+ .container{max-width:none;margin:0;padding:0}
+ #planner{display:block!important}
+ .paper{border:0;padding:4mm}
+}
+</style>
+</head>
+<body>
+<header>
+<h1>LEAD ENGLISH PLANNER</h1>
+<p>Jordan English Curriculum • Grades 1–6 • 5E + Siraj • A4 Landscape</p>
+</header>
+
+<div class="container">
+<section class="card setup">
+<h2>Daily Lesson Preparation</h2>
+<p>Select all lesson information <strong>only here</strong>. The lesson plan page below is identical for Grades 1–6 and contains no extra curriculum selectors.</p>
+<div class="grid">
+<div class="field"><label>Grade</label><select id="grade"></select></div>
+<div class="field"><label>Semester</label><select id="semester"><option>Semester 1</option><option>Semester 2</option></select></div>
+<div class="field"><label>Unit</label><select id="unit"></select></div>
+<div class="field"><label>Lesson</label><select id="lesson"></select></div>
+<div class="field"><label>Period</label><select id="period"><option>Period 1</option><option>Period 2</option><option>Period 3</option></select></div>
+<div class="field"><label>Class / Section</label><input id="section" placeholder="e.g. 3A"></div>
+<div class="field"><label>Date</label><input id="date" type="date"></div>
+<div class="field" style="display:flex;align-items:end"><button class="primary full" onclick="openPlanner()">Open Lesson Plan</button></div>
+</div>
+</section>
+
+<section id="planner">
+<div class="toolbar">
+<button class="secondary" onclick="backToSetup()">Change lesson</button>
+<button class="primary" onclick="window.print()">Print / Save as PDF</button>
+</div>
+
+<div class="paper">
+<div class="paper-title">
+<h2>Lesson Plan</h2>
+<p>English Language • 5E Model • Siraj integrated into Teacher and Learner roles</p>
+</div>
+
+<div class="info">
+<div><b>Class / Level</b><span id="pgrade" class="editable" contenteditable="true"></span></div>
+<div><b>Subject</b><span class="editable" contenteditable="true">English Language</span></div>
+<div><b>Unit Title</b><span id="punit" class="editable" contenteditable="true"></span></div>
+<div><b>Lesson Title</b><span id="plesson" class="editable" contenteditable="true"></span></div>
+<div><b>Semester</b><span id="psemester" class="editable" contenteditable="true"></span></div>
+<div><b>Period</b><span id="pperiod" class="editable" contenteditable="true"></span></div>
+<div><b>Class / Section</b><span id="psection" class="editable" contenteditable="true"></span></div>
+<div><b>Date</b><span id="pdate" class="editable" contenteditable="true"></span></div>
+</div>
+
+<div class="objective">
+<b>Learning Objectives / Main Outcomes</b>
+<div id="pobjective" class="editable" contenteditable="true">
+Learners will achieve the lesson target through age-appropriate listening, speaking, reading and/or writing activities and demonstrate evidence of learning.
+</div>
+</div>
+
+<table>
+<thead>
+<tr><th>5E Stage</th><th>Teacher Role + Siraj</th><th>Learner Role + Siraj</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr><td class="stage s1">1. Engage</td><td class="editable" contenteditable="true">Activate prior knowledge using a question, visual, object, song or short classroom situation. Use Siraj for a motivating prompt and quick diagnostic check.</td><td class="editable" contenteditable="true">Respond, predict, recall prior learning and connect the topic to personal experience. Interact with Siraj as a learning partner.</td><td class="editable" contenteditable="true">5 min</td></tr>
+<tr><td class="stage s2">2. Explore</td><td class="editable" contenteditable="true">Guide learners through the relevant Pupil’s Book / Activity Book task. Use Siraj to provide modelling, visuals, audio or guided practice.</td><td class="editable" contenteditable="true">Explore, observe, listen, match, sort, read or practise individually, in pairs or groups with Siraj support.</td><td class="editable" contenteditable="true">10 min</td></tr>
+<tr><td class="stage s3">3. Explain</td><td class="editable" contenteditable="true">Elicit and clarify meaning, pronunciation, vocabulary, grammar or language function. Model accurate English and use Siraj for examples and immediate feedback.</td><td class="editable" contenteditable="true">Explain what they notice, answer checking questions, practise the target language and respond to Siraj feedback.</td><td class="editable" contenteditable="true">10 min</td></tr>
+<tr><td class="stage s4">4. Elaborate</td><td class="editable" contenteditable="true">Set a meaningful communicative, creative or problem-solving task. Differentiate support and challenge using Siraj where appropriate.</td><td class="editable" contenteditable="true">Apply the language in a new context, communicate, create, solve, role-play or retell with peers and Siraj.</td><td class="editable" contenteditable="true">15 min</td></tr>
+<tr><td class="stage s5">5. Evaluate</td><td class="editable" contenteditable="true">Check achievement of the objective through an exit task, performance, oral response or short written evidence. Use Siraj for self-checking and feedback.</td><td class="editable" contenteditable="true">Demonstrate learning, complete the exit check, self-assess and state what they learned.</td><td class="editable" contenteditable="true">5 min</td></tr>
+</tbody>
+</table>
+
+<div class="bottom">
+<div><b>Assessment / Evidence</b><textarea>Observation, questioning, participation, task performance, oral/written evidence and self-assessment.</textarea></div>
+<div><b>Resources / Differentiation / Homework</b><textarea>Pupil’s Book, Activity Book, board, flashcards, audio/digital resources, Siraj. Support with visuals, modelling and sentence frames; extend with additional speaking/reading/writing.</textarea></div>
+</div>
+</div>
+</section>
+<p class="note">All lesson-plan fields are editable before printing. The presentation column and extra in-plan selectors have been removed.</p>
+</div>
+
+<script>
+const grades=["Grade 1","Grade 2","Grade 3","Grade 4","Grade 5","Grade 6"];
+const lessonNames=[
+"Lesson 1 — Vocabulary & Grammar",
+"Lesson 2 — Vocabulary & Grammar",
+"Lesson 3 — Story",
+"Lesson 4 — Story",
+"Lesson 5 — Vocabulary & Grammar",
+"Lesson 6 — Vocabulary & Grammar",
+"Lesson 7 — Skills",
+"Lesson 8 — Culture / English in Action"
+];
+for(const g of grades){const o=document.createElement("option");o.textContent=g;grade.appendChild(o)}
+function fillUnits(){
+ unit.innerHTML="";
+ for(let i=1;i<=8;i++){let o=document.createElement("option");o.value=i;o.textContent="Unit "+i;unit.appendChild(o)}
+ fillLessons();
+}
+function fillLessons(){
+ lesson.innerHTML="";
+ for(let i=0;i<lessonNames.length;i++){let o=document.createElement("option");o.value=i;o.textContent=lessonNames[i];lesson.appendChild(o)}
+}
+function openPlanner(){
+ pgrade.textContent=grade.value;
+ psemester.textContent=semester.value;
+ punit.textContent="Unit "+unit.value;
+ plesson.textContent=lesson.options[lesson.selectedIndex].text;
+ pperiod.textContent=period.value;
+ psection.textContent=section.value||"";
+ pdate.textContent=date.value?new Date(date.value+"T00:00:00").toLocaleDateString("en-GB"):"";
+ document.querySelector(".setup").style.display="none";
+ planner.style.display="block";
+ scrollTo(0,0);
+}
+function backToSetup(){
+ planner.style.display="none";
+ document.querySelector(".setup").style.display="block";
+ scrollTo(0,0);
+}
+grade.onchange=fillUnits;
+semester.onchange=fillUnits;
+fillUnits();
+</script>
+</body>
+</html>
