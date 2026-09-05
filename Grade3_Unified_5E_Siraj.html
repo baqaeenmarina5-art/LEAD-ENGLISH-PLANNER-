@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Grade 3 Jordan Team Together Daily Planner</title>
+<style>
+:root{--navy:#173b63;--blue:#2e6b94;--line:#a9b8c5;--soft:#eef4f8;--gold:#d9a941}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#edf2f6;color:#182633}
+header{background:linear-gradient(135deg,#173b63,#2e6b94);color:white;padding:18px 22px}
+header h1{margin:0;font-size:24px}header p{margin:5px 0 0;font-size:13px}
+.wrap{max-width:1450px;margin:auto;padding:18px}
+.selector,.paper{background:white;border:1px solid #ccd7df;border-radius:14px;box-shadow:0 3px 12px #0001}
+.selector{padding:18px;display:grid;grid-template-columns:1fr 1fr 1.5fr auto;gap:12px;align-items:end}
+label{font-size:12px;font-weight:bold;color:#173b63;display:block;margin-bottom:6px}
+select,input,textarea{width:100%;border:1px solid #b7c5d0;border-radius:8px;padding:9px;font:inherit}
+button{border:0;border-radius:8px;padding:10px 15px;font-weight:bold;cursor:pointer}
+.primary{background:#173b63;color:white}.green{background:#2f8b65;color:white}.gold{background:#d9a941;color:#17202a}.light{background:#e8eef3;color:#173b63}
+.notice{margin-top:12px;padding:10px;background:#f8fafc;border-left:4px solid #d9a941;font-size:12px}
+#planner{display:none}.paper{margin-top:15px;padding:8mm}
+.title{text-align:center;margin-bottom:9px}.title h2{margin:0;color:#173b63;font-size:19px}.title p{margin:4px;color:#607486;font-size:10px}
+.meta{display:grid;grid-template-columns:1fr 1.6fr 1.6fr 1fr;border:1px solid #637480}
+.meta div{padding:6px;border-right:1px solid #637480;border-bottom:1px solid #637480;min-height:38px}
+.meta div:nth-child(4n){border-right:0}.meta b{display:block;font-size:8px;color:#5d7080;text-transform:uppercase}.meta span{font-size:10px}
+.info{margin-top:7px;border:1px solid #637480;padding:7px;font-size:9.5px}
+table{width:100%;border-collapse:collapse;table-layout:fixed;margin-top:7px;font-size:9px}
+th,td{border:1px solid #637480;padding:5px;vertical-align:top}th{background:#173b63;color:white}
+th:nth-child(1){width:12%}th:nth-child(2){width:34%}th:nth-child(3){width:34%}th:nth-child(4){width:8%}th:nth-child(5){width:12%}
+.stage{font-weight:bold}.s1{background:#dceaf7}.s2{background:#e1f0df}.s3{background:#fff0c6}.s4{background:#f0e3f5}.s5{background:#f8dede}
+.edit{min-height:64px;outline:0;white-space:pre-wrap}.edit:focus{box-shadow:inset 0 0 0 2px #5b96c4;background:#fbfdff}
+.lower{display:grid;grid-template-columns:1fr 1fr 1fr;margin-top:7px}.lower>div{border:1px solid #637480;padding:6px;min-height:65px;font-size:9px}.lower>div:not(:last-child){border-right:0}
+.lower textarea{border:0;padding:0;min-height:48px;resize:vertical;font-size:9px}
+.sign{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:10px;font-size:8.5px}
+.small{text-align:center;color:#657786;font-size:8px;margin-top:7px}
+@media(max-width:850px){.selector,.meta{grid-template-columns:1fr 1fr}}
+@media print{body{background:white}header,.selector,.notice,.no-print{display:none!important}.wrap{padding:0;max-width:none}.paper{border:0;box-shadow:none;margin:0;padding:4mm}@page{size:A4 landscape;margin:6mm}}
+</style></head>
+<body>
+<header><h1>LEAD ENGLISH — Grade 3 Daily Lesson Planner</h1>
+<p>Jordan Team Together • Semester 1 & Semester 2 • 5E • Siraj • English Presentation • A4 Landscape</p></header>
+<div class="wrap">
+<section class="selector" id="selector">
+<div><label>Semester</label><select id="sem" onchange="units()"></select></div>
+<div><label>Unit</label><select id="unit" onchange="lessons()"></select></div>
+<div><label>Lesson</label><select id="lesson"></select></div>
+<button class="primary" onclick="openPlan()">Open Lesson Plan</button>
+</section>
+<div class="notice" id="notice">Select Semester → Unit → Lesson. These selectors appear only on the opening screen.</div>
+
+<section id="planner"><div class="paper">
+<div class="no-print" style="display:flex;gap:7px;justify-content:flex-end;margin-bottom:7px">
+<button class="light" onclick="back()">Change lesson</button><button class="green" onclick="window.print()">Print / Save as PDF</button><button class="gold" onclick="resetPlan()">Reset editable fields</button>
+</div>
+<div class="title"><h2 contenteditable="true" class="edit" id="pt">Grade 3 English Daily Lesson Plan</h2>
+<p>One unified editable lesson sheet • 5E • Siraj integrated in teacher and learner roles</p></div>
+<div class="meta">
+<div><b>Grade</b><span contenteditable="true" class="edit">Grade 3</span></div>
+<div><b>Unit</b><span id="pu" contenteditable="true" class="edit"></span></div>
+<div><b>Lesson</b><span id="pl" contenteditable="true" class="edit"></span></div>
+<div><b>Semester</b><span id="ps" contenteditable="true" class="edit"></span></div>
+<div><b>Teacher</b><span contenteditable="true" class="edit">T. Marina Al_ Baqaeen</span></div>
+<div><b>Date</b><span contenteditable="true" class="edit">____ / ____ / ______</span></div>
+<div><b>Class / Section</b><span contenteditable="true" class="edit">________________</span></div>
+<div><b>Duration</b><span contenteditable="true" class="edit">45 minutes</span></div>
+</div>
+<div class="info"><b>Learning objective / evidence of learning</b><div id="obj" class="edit" contenteditable="true"></div></div>
+<div class="info"><b>Lesson focus</b><div id="focus" class="edit" contenteditable="true"></div></div>
+<table><thead><tr><th>5E Stage</th><th>Teacher Role + Siraj</th><th>Learner Role + Siraj</th><th>Time</th><th>Presentation Language</th></tr></thead>
+<tbody id="rows"></tbody></table>
+<div class="lower">
+<div><b>Assessment / Evidence</b><textarea>Teacher observation; oral/written response; task/product; quick exit check; Siraj formative feedback.</textarea></div>
+<div><b>Differentiation</b><textarea>Support: visuals, modelling, word bank, sentence frames and peer support.
+Challenge: extended speaking, reading or writing.</textarea></div>
+<div><b>Resources / Homework</b><textarea>Pupil’s Book; Activity Book; board; flashcards; audio/digital resources; Siraj.
+Homework: related practice and vocabulary review.</textarea></div>
+</div>
+<div class="sign"><div>Teacher’s signature: __________________</div><div>Supervisor’s signature: __________________</div><div>Principal’s signature: __________________</div></div>
+<div class="small">Presentation language: English • A4 Landscape • Editable</div>
+</div></section></div>
+
+<script>
+const DATA={"S1": [["Unit 1 — It’s a happy day!", "8–15", "get up, have breakfast, go to school, have art lessons, play with my friends, go home, have lunch, do homework, have dinner, go to bed; morning, afternoon, evening, night", "I play / I don’t play. We have / We don’t have lunch. When do you go home? We go home in the afternoon.", "pl / bl", "Daily routines and time"], ["Unit 2 — Let’s dress up!", "16–23", "dress, sandals, socks, hat, scarf, jeans, pyjamas, trainers, baseball cap, shirt; glasses, keys, handbag, backpack, phone, computer", "You’re / They’re wearing …; Our … are …; Your … are …; Their … are …", "dr / tr / br", "Clothes and possessions"], ["Unit 3 — The activity centre", "24–31", "watch TV, play table tennis, read books, play badminton, play video games, play tennis, play basketball, roller skate, skateboard, do karate; Sunday–Saturday; the weekend", "He/She plays … He/She doesn’t … Does he/she …? Yes, he/she does. No, he/she doesn’t.", "sk / sw / st", "Activities, days and hobbies"], ["Unit 4 — I want to be a teacher!", "32–39", "teacher, doctor, nurse, firefighter, astronaut, pilot, police officer, builder, chef, artist; bus, boat, underground, train, motorbike, car", "I want to be a … He/She goes to work by …", "wh", "Jobs, aspirations and transport"]], "S2": [["Unit 5 — Fun on the farm", "8–15", "chicken, cow, donkey, duck, goat, horse, sheep, bird, bee, turkey; collect the eggs, milk the cows, brush the horses, fix the gate, sweep the barn, clean the cage", "Is he/she/it ...? Yes, he/she/it is. No, he/she/it isn’t. Are they ...? Yes, they are. No, they aren’t.", "ng", "Farm animals and activities"], ["Unit 6 — Out in the forest", "16–23", "forest/outdoor vocabulary; dry, old, new, wet, plain, clean, dirty, soft, hard, fancy", "Unit target language for describing things and outdoor situations.", "Unit phonics", "Nature and descriptive language"], ["Unit 7 — Look at the stars", "24–31", "space and night-sky vocabulary from the Pupil’s Book", "Unit target language for describing and asking about the night sky.", "Unit phonics", "Space and the night sky"], ["Unit 8 — Animals are fun!", "32–39", "animal vocabulary from the Pupil’s Book and unit context", "Unit target language for describing animals and simple comparisons.", "Unit phonics", "Animals and descriptions"]]};
+const LF=[["Lesson 1", "Pupil\u2019s Book Vocabulary and Grammar"], ["Lesson 2", "Activity Book Vocabulary and Grammar"], ["Lesson 3", "Pupil\u2019s Book Story"], ["Lesson 4", "Activity Book Story"], ["Lesson 5", "Pupil\u2019s Book Vocabulary and Grammar"], ["Lesson 6", "Activity Book Vocabulary and Grammar"], ["Lesson 7", "Pupil\u2019s Book and Activity Book Skills"], ["Lesson 8", "Pupil\u2019s Book and Activity Book Culture"], ["Lesson 9", "Pupil\u2019s Book and Activity Book English in Action"], ["Lesson 10", "Pupil\u2019s Book and Activity Book Phonics"]];
+const ST=[
+["Engage","s1","Activate prior knowledge with a short question, picture, object or classroom routine linked to the lesson. Siraj acts as a concise diagnostic prompt and motivating clue.","Respond, predict, notice and connect to prior learning. Siraj acts as a learner/partner; pupils answer and compare ideas.","5 min"],
+["Explore","s2","Set the relevant Pupil’s Book/Activity Book exploration task. Guide pair/group work. Siraj provides a visual, audio, matching, sorting or guided challenge.","Explore through listening, reading, matching, sorting, noticing or practice. Siraj acts as a learner/partner and attempts the task.","10 min"],
+["Explain","s3","Elicit the language pattern from examples, clarify meaning/form/pronunciation and model accurate English. Siraj models, questions and gives specific feedback.","State what they notice, answer concept checks, repeat/model target language and improve examples from feedback.","10 min"],
+["Elaborate","s4","Move to a meaningful communicative task, project, role-play or personalised response. Siraj supports differentiation and asks follow-up questions.","Apply target language in a new context, collaborate, create, speak/read/write and revise. Siraj acts as learner/partner.","15 min"],
+["Evaluate","s5","Check the objective with an exit task, oral questions, performance or short written evidence. Siraj gives a brief recap/check.","Demonstrate learning, self-assess and complete the exit check independently.","5 min"]
+];
+function init(){sem.innerHTML='<option value="S1">Semester 1</option><option value="S2">Semester 2</option>';units();}
+function units(){unit.innerHTML='';DATA[sem.value].forEach((x,i)=>{let o=document.createElement('option');o.value=i;o.textContent=x[0];unit.appendChild(o)});lessons();}
+function lessons(){lesson.innerHTML='';let u=DATA[sem.value][+unit.value];u[5].forEach((x,i)=>{let o=document.createElement('option');o.value=i;o.textContent=x[0]+' — '+x[1];lesson.appendChild(o)})}
+sem.onchange=units;unit.onchange=lessons;
+function openPlan(){let s=sem.value,u=DATA[s][+unit.value],l=u[5][+lesson.value];pu.textContent=u[0];pl.textContent=l[0]+' — '+l[1];ps.textContent=s==='S1'?'Semester 1':'Semester 2';pt.textContent=l[0]+' — Daily Lesson Plan';obj.textContent='By the end of the lesson, learners will be able to '+l[2].toLowerCase();focus.textContent='Vocabulary: '+u[2]+' | Grammar / Function: '+l[2]+' | Phonics / Reading: '+u[4]+' | Unit theme: '+u[5];rows.innerHTML=ST.map(x=>`<tr><td class="stage ${x[1]}">${x[0]}</td><td><div class="edit" contenteditable="true">${x[2]} Lesson-specific focus: ${l[1]}.</div></td><td><div class="edit" contenteditable="true">${x[3]} Lesson-specific focus: ${l[1]}.</div></td><td><div class="edit" contenteditable="true">${x[4]}</div></td><td><div class="edit" contenteditable="true">English</div></td></tr>`).join('');selector.style.display='none';notice.style.display='none';planner.style.display='block';scrollTo(0,0);}
+function back(){planner.style.display='none';selector.style.display='grid';notice.style.display='block';}
+function resetPlan(){openPlan();}
+init();
+</script></body></html>
