@@ -1,7 +1,7 @@
 {
   "name": "LEAD English Planner",
   "short_name": "LEAD English",
-  "description": "Jordan English Curriculum daily lesson planner — Grades 1-6",
+  "description": "Jordan English Curriculum daily lesson planner — Grades 1-7",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
